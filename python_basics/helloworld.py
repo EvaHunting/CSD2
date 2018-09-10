@@ -1,2 +1,5 @@
-print ("Hello World")
+username = input ("insert name: ");
+print ("Hello" username)
+
+
 
