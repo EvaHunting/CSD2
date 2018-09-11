@@ -1,5 +1,2 @@
-username = input ("insert name: ");
-print ("Hello" username)
-
-
-
+username = input("insert name: ");
+print("Hello", username)
