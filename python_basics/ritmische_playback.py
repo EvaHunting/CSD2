@@ -1,13 +1,11 @@
 import simpleaudio as sa
 import time
 
-# list with values
-# number of items in list
-# forloop
-
 wave_obj = sa.WaveObject.from_wave_file("/Users/evahunting/CSD2/python_basics/Snare.wav")
 times = int(input("insert the number of times you would like to hear this sound: "))
+#Het BPM van het ritme
 BPM = int(input("BPM: "))
+#Lengte van de noten
 values = [0.5, 0.25, 0.5, 0.75, 1]
 numValues = len(values)
 
