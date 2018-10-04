@@ -21,12 +21,12 @@ def playSnare():
         play_obj = wave_obj.play()
 
 def numPlaybackTimes(times):
-    if numPlaybackTimes == 0:
+    if times == 0:
         return 0
     else:
         playSnare()
-        return playSnare()
-        return (times - 1)
+        return numPlaybackTimes(times - 1)
+        
 
 numPlaybackTimes(times)
 
