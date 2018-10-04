@@ -42,17 +42,21 @@ sixteenthNoteDuration = quarterNoteDuration / 4.0
 
 # create a list to hold the timestamps
 timestamps = []
-# create a list with ‘note timestamps' in 16th at which we should play the sample
-noteDurations = input("List of durations notes (16th): ")
 timestamps16th = []
 
+# create a list with ‘note timestamps' in 16th at which we should play the sample
+noteDurations_nolist = input("List of durations notes (16th): ")
+noteDurations = [float(x) for x in noteDurations_nolist.split(", ")]
+
 def durationToTimestamps16th(noteDurations):
-  noteDurations = input("List of durations notes (16th): ")
   currentTime = 0
   for note in noteDurations:
     currentTime += note * sixteenthNoteDuration 
     timestamps16th.append(currentTime)
 
+durationToTimestamps16th(noteDurations)
+    
+print(timestamps16th)
 
 # transform the sixteenthTimestamps to a timestamps list with time values
 for timestamp in timestamps16th:
@@ -83,3 +87,4 @@ while keepPlaying:
   else:
     # wait for a very short moment
     time.sleep(0.001)
+
