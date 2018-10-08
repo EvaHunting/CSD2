@@ -1,19 +1,20 @@
 """
-1. BPM
-2. Samples (laag, hoog, mid)
-3. Vragen naar welke maatsoort
-4. Random gegenereerde beat
-5. Vragen naar opslaan als MIDI-file
-6. terug naar 4
-7. Stopfuntie --> opgeslagen "Wil je stoppen?"
+1. BPM 
+2. Vragen naar welke maatsoort
+3. Random gegenereerde beat (uit 3 lagen)
+4. Samples koppelen aan beat (laag, hoog, mid)
+5. Ritme afspelen
+6. Vragen naar opslaan als MIDI-file
+7. terug naar 4
+8. Stopfuntie --> opgeslagen "Wil je stoppen?"
 """
 import time
 import simpleaudio as sa
 import random
 
-wave_obj_snare = sa.WaveObject.from_wave_file("/Users/evahunting/CSD2/python_basics/Snare.wav")
-wave_obj_kick = sa.WaveObject.from_wave_file("/Users/evahunting/CSD2/python_basics/Kick.wav")
-wave_obj_hihat = sa.WaveObject.from_wave_file("/Users/evahunting/CSD2/python_basics/Hihat.wav")
+wave_obj_snare = sa.WaveObject.from_wave_file("../python_basics/Snare.wav")
+wave_obj_kick = sa.WaveObject.from_wave_file("../python_basics/Kick.wav")
+wave_obj_hihat = sa.WaveObject.from_wave_file("../python_basics/Hihat.wav")
 
 #-----------function-----------#
 def bpm(BPM):
@@ -27,8 +28,15 @@ def playKick():
 
 def playHihat():
     play_obj = wave_obj_hihat.play()
+
+#-----------other-----------#
+
+
+    
 #-----------input-----------#
 BPM = int(input("BPM: "))
+maatsoort = input("Time signature: 5/4 or 7/8: ")
+
 
    
 """
