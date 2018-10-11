@@ -11,10 +11,16 @@
 import time
 import simpleaudio as sa
 import random
+import mido
 
+#inladen samples
 wave_obj_snare = sa.WaveObject.from_wave_file("../python_basics/Snare.wav")
 wave_obj_kick = sa.WaveObject.from_wave_file("../python_basics/Kick.wav")
 wave_obj_hihat = sa.WaveObject.from_wave_file("../python_basics/Hihat.wav")
+
+#noten koppelen aan BPM
+quarterNoteDuration = 60 / bpm
+sixteenthNoteDuration = quarterNoteDuration / 4.0
 
 #-----------function-----------#
 def bpm(BPM):
@@ -29,6 +35,10 @@ def playKick():
 def playHihat():
     play_obj = wave_obj_hihat.play()
 
+def playBeat(maatsoort):
+    if maatsoort == 5/4
+        
+    else
 #-----------other-----------#
 
 
