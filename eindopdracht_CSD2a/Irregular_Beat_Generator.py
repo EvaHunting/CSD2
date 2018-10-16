@@ -36,7 +36,7 @@ def playHihat():
     play_obj = wave_obj_hihat.play()
 
 def playBeat(maatsoort):
-    if maatsoort == 5/4
+    if maatsoort == 5/4:
         
     else
 #-----------other-----------#
