@@ -59,3 +59,48 @@ def laag3():
 laag1()
 laag2()
 laag3()
+
+"""
+#ritmes voor laag 1 waarbij de lengte 7 tellen is
+def laag1():
+    randomNote1 = random.choice(noteLength_choice)
+    noteLengths1.append(randomNote1)
+    if sum(noteLengths1) == 7:
+        print(noteLengths1)
+        return 0
+    else:
+        if sum(noteLengths1) >= 7:
+           noteLengths1.clear()
+           return laag1()
+        else:
+            return laag1()
+
+#ritmes voor laag 2 waarbij de lengte 7 tellen is
+def laag2():
+    randomNote2 = random.choice(noteLength_choice)
+    noteLengths2.append(randomNote2)
+    if sum(noteLengths2) == 7:
+        print(noteLengths2)
+        return 0
+    else:
+        if sum(noteLengths2) >= 7:
+           noteLengths2.clear()
+           return laag2()
+        else:
+            return laag2()
+
+#ritmes voor laag 3 waarbij de lengte 7 tellen is
+def laag3():
+    randomNote3 = random.choice(noteLength_choice)
+    noteLengths3.append(randomNote3)
+    if sum(noteLengths3) == 7:
+        print(noteLengths3)
+        return 0
+    else:
+        if sum(noteLengths3) >= 7:
+           noteLengths3.clear()
+           return laag3()
+        else:
+            return laag3()
+
+"""
