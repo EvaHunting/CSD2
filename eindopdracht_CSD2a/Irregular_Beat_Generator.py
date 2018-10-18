@@ -12,6 +12,7 @@ import time
 import simpleaudio as sa
 import random
 import mido
+import os.path
 import threading
 from threading import Thread
 
@@ -148,8 +149,23 @@ def playKick():
 def playHihat():
     play_obj = wave_obj_hihat.play()
 
+# TODO
 def MIDI():
     print("MIDI")
+
+def quit():
+    stop = input("Quit? (yes/no) ")
+    if stop == 'yes':
+        quit
+    else:
+        return playBeat()
+#TODO
+def save():
+    save = input("Save as MIDI file? (yes/no) ")
+    if save == 'yes':
+        MIDI()
+    else:
+        quit()
     
 
 def playBeat():
@@ -162,7 +178,7 @@ def playBeat():
         l1_VV.start()
         l2_VV.start()
         l3_VV.start()
-        MIDI()
+        save()
     else:
         print('7/8')
         l1_ZA = Thread(target = laag1_ZA)
@@ -172,29 +188,10 @@ def playBeat():
         l1_ZA.start()
         l2_ZA.start()
         l3_ZA.start()
-        MIDI()
+        save()
     
 #-----------input-----------#
 BPM = int(input("BPM: "))
 maatsoort = eval(input("Time signature (5/4 or 7/8): "))
 
 playBeat()
-
-   
-"""
-Input gebruiker:
-1. BPM
-
-2. Maatsoort (7/8 of 5/4)
-
-
-3. Opslaan als MIDI-file? (Ja / Nee)
-    When Ja:
-        Quit? (Ja / Nee)
-        When Ja:
-            exit
-        Else:
-            repeat from 3.
-    Else:
-        repeat from 3
-"""
