@@ -2,44 +2,69 @@ import time
 import simpleaudio as sa
 import random
 import mido
+import midiutil
+from midiutil.MidiFile import MIDIFile
 
-#inladen samples
-wave_obj_snare = sa.WaveObject.from_wave_file("../python_basics/Snare.wav")
-wave_obj_kick = sa.WaveObject.from_wave_file("../python_basics/Kick.wav")
-wave_obj_hihat = sa.WaveObject.from_wave_file("../python_basics/Hihat.wav")
+BPM = int(input("BPM: "))
+noteLengths1_VV = [0.5, 2, 1, 1.5]
+noteLengths2_VV = [2, 0.5, 1.5, 1]
+noteLengths3_VV = [1, 0.5, 1.5, 2]
 
-noteLength_choice = [0.0, 0.5, 1.0, 1.5, 2.0]
-noteLengths1 = []
-noteLengths2 = []
-noteLengths3 = []
-
-def laag1():
-    randomNote1 = random.choice(noteLength_choice)
-    noteLengths1.append(randomNote1)
-    if len(noteLengths1) == 5:
-        print(noteLengths1)
-        return 0
+def MIDI_VV():
+    mf = MIDIFile(3)    #3 tracks
+    startTime = 0       #begint bij het begin
+    track = 0
+    mf.addTrackName(track, startTime, "5/4 Beat")
+    mf.addTempo(track, startTime, BPM)
+    if len(noteLengths1_VV) == 0:
+        print("Kick Done")
+        #write to disk
+        with open("output.mid", 'wb') as outf:
+            mf.writeFile(outf)
     else:
-        return laag1()
-
-def laag2():
-    randomNote2 = random.choice(noteLength_choice)
-    noteLengths2.append(randomNote2)
-    if len(noteLengths2) == 5:
-        print(noteLengths2)
-        return 0
+        track = 0                           #eerste track
+        channel = 10                        #percussie
+        volume = 100    
+        pitch = 35                          #kick
+        time = 0                            #startpunt noot
+        duration = noteLengths1_VV.pop(0)   #1e nootlengte uit de lijst
+        mf.addNote(track, channel, pitch, time, duration, volume)
+        print(mf)
+        return MIDI_VV()
+"""
+    if len(noteLengths2_VV) == 0:
+        print("Snare Done")
+        
     else:
-        return laag2()    
+        track = 1                           #tweede track
+        startTime = 0        
+        channel = 10                        #percussie
+        volume = 100    
+        instrument = 38                     #snare
+        time = 0                            #startpunt noot
+        duration = noteLengths2_VV.pop(0)   #1e nootlengte uit de lijst
+        mf.addNote(track, channel, instrument, time, duration, volume)
+        print(" ")
+        return MIDI_VV()
 
-def laag3():
-    randomNote3 = random.choice(noteLength_choice)
-    noteLengths3.append(randomNote3)
-    if len(noteLengths3) == 5:
-        print(noteLengths3)
-        return 0
+    if len(noteLengths3_VV) == 0:
+        print("Hihat Done")
+        print("Done")
+
+        #write to disk
+        with open("output.mid", 'wb') as outf:
+            mf.writeFile(outf)
     else:
-        return laag3()
+        track = 2                           #derde track
+        startTime = 0
+        channel = 10                        #percussie
+        volume = 100    
+        instrument = 42                     #hihat
+        time = 0                            #startpunt noot
+        duration = noteLengths3_VV.pop(0)   #1e nootlengte uit de lijst
+        mf.addNote(track, channel, instrument, time, duration, volume)
+        print(" ")
+        return MIDI_VV()
+"""
+MIDI_VV()
 
-laag1()
-laag2()
-laag3()

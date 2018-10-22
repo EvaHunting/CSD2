@@ -11,7 +11,8 @@
 import time
 import simpleaudio as sa
 import random
-import mido
+import midiutil
+from midiutil.MidiFile import MIDIFile
 import os.path
 import threading
 from threading import Thread
@@ -149,9 +150,58 @@ def playKick():
 def playHihat():
     play_obj = wave_obj_hihat.play()
 
-# TODO
-def MIDI():
-    print("MIDI")
+# FIXME
+def MIDI_VV():
+    mf = MIDIFile(3)    #3 tracks
+    startTime = 0       #begint bij het begin
+    track = 0
+    mf.addTrackName(track, startTime, "5/4 Beat")   
+    mf.addTempo(track, startTime, BPM)
+    if len(noteLengths1_VV) == 0:
+        print("Kick Done")
+    else:
+        track = 0                           #eerste track
+        channel = 10                        #percussie
+        volume = 100    
+        instrument = 35                     #kick
+        time = 0                            #startpunt noot
+        duration = noteLengths1_VV.pop(0)   #1e nootlengte uit de lijst
+        mf.addNote(track, channel, instrument, time, duration, volume) #voeg noot toe aan midifile
+        print(" ")
+        return MIDI_VV()
+
+    if len(noteLengths2_VV) == 0:
+        print("Snare Done")
+    else:
+        track = 1                           #tweede track
+        startTime = 0        
+        channel = 10                        #percussie
+        volume = 100    
+        instrument = 38                     #snare
+        time = 0                            #startpunt noot
+        duration = noteLengths2_VV.pop(0)   #1e nootlengte uit de lijst
+        mf.addNote(track, channel, instrument, time, duration, volume)
+        print(" ")
+        return MIDI_VV()
+
+    if len(noteLengths3_VV) == 0:
+        print("Hihat Done")
+        print("Done")
+
+        #write to disk
+        with open("output.mid", 'wb') as output_file:
+            mf.writeFile(output_file)
+    else:
+        track = 2                           #derde track
+        startTime = 0
+        channel = 10                        #percussie
+        volume = 100    
+        instrument = 42                     #hihat
+        time = 0                            #startpunt noot
+        duration = noteLengths3_VV.pop(0)   #1e nootlengte uit de lijst
+        mf.addNote(track, channel, instrument, time, duration, volume)
+        print(" ")
+        return MIDI_VV()
 
 def quit():
     stop = input("Quit? (yes/no) ")
@@ -160,13 +210,20 @@ def quit():
     else:
         return playBeat()
 #TODO
-def save():
+def save_VV():
     save = input("Save as MIDI file? (yes/no) ")
     if save == 'yes':
-        MIDI()
+        MIDI_VV()
     else:
         quit()
-    
+
+#TODO
+def save_ZA():
+    save = input("Save as MIDI file? (yes/no) ")
+    if save == 'yes':
+        MIDI_ZA()
+    else:
+        quit()
 
 def playBeat():
     if maatsoort == 5/4:
@@ -178,7 +235,7 @@ def playBeat():
         l1_VV.start()
         l2_VV.start()
         l3_VV.start()
-        save()
+        save_VV()
     else:
         print('7/8')
         l1_ZA = Thread(target = laag1_ZA)
@@ -188,7 +245,7 @@ def playBeat():
         l1_ZA.start()
         l2_ZA.start()
         l3_ZA.start()
-        save()
+        save_ZA()
     
 #-----------input-----------#
 BPM = int(input("BPM: "))
