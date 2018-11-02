@@ -1,3 +1,13 @@
+"""
+1. BPM 
+2. Vragen naar welke maatsoort
+3. Random gegenereerde beat (uit 3 lagen)
+4. Samples koppelen aan beat (laag, hoog, mid)
+5. Ritme afspelen
+6. Vragen naar opslaan als MIDI-file
+7. terug naar 4
+8. Stopfuntie --> opgeslagen "Wil je stoppen?"
+"""
 import time
 import simpleaudio as sa
 import random
@@ -17,25 +27,10 @@ noteLength_choice = [0.5, 1.0, 1.5, 2.0]
 
 #-----------functions-----------#
 
-def playSnare():
-    play_obj = wave_obj_snare.play()
-
-def playKick():
-    play_obj = wave_obj_kick.play()
-
-def playHihat():
-    play_obj = wave_obj_hihat.play()
-    
 #---------------------5/4---------------------#
-global noteLengths1_VV, noteLengths2_VV, noteLengths3_VV
-global currentNote1_VV, currentNote2_VV, currentNote3_VV
-
 noteLengths1_VV = []
 noteLengths2_VV = []
 noteLengths3_VV = []
-currentNote1_VV = 0.
-currentNote2_VV = 0.
-currentNote3_VV = 0.
 
 #ritmes voor laag 1 waarbij de lengte 5 tellen is
 def laag1_VV():
@@ -89,15 +84,9 @@ def laag3_VV():
             return laag3_VV()    
 #----------------------------------------------#
 #---------------------7/8---------------------#
-global noteLengths1_ZA, noteLengths2_ZA, noteLengths3_ZA
-global currentNote1_ZA, currentNote2_ZA, currentNote3_ZA
-
 noteLengths1_ZA = []
 noteLengths2_ZA = []
 noteLengths3_ZA = []
-currentNote1_ZA = 0.
-currentNote2_ZA = 0.
-currentNote3_ZA = 0.
 
 #ritmes voor laag 1 waarbij de lengte 7 tellen is
 def laag1_ZA():
@@ -152,149 +141,104 @@ def laag3_ZA():
         
 #----------------------------------------------#
 
+def playSnare():
+    play_obj = wave_obj_snare.play()
+
+def playKick():
+    play_obj = wave_obj_kick.play()
+
+def playHihat():
+    play_obj = wave_obj_hihat.play()
+
 mf = MIDIFile(3)    #3 tracks
 
-def MIDI_VV(mf, noteLengths1_VV, noteLengths2_VV, noteLengths3_VV, currentNote1_VV, currentNote2_VV, currentNote3_VV):
-    if mf is None:
-        mf = MIDIFile(3)    #3 tracks
-        startTime = 0       #begint bij het begin
+# FIXME
+def MIDI_VV(mf):
+    for i, duration in enumerate(noteLengths1_VV):
         track = 0
-        mf.addTrackName(track, startTime, "5/4 Beat")
-        mf.addTempo(track, startTime, BPM)
-        return MIDI_VV(mf, noteLengths1_VV, noteLengths2_VV, noteLengths3_VV, currentNote1_VV, currentNote2_VV, currentNote3_VV)
+        channel = 10
+        instrument = 35
+        time = 0
+        tempo = BPM
+        volume = 100
+        mf.addNote(track, channel, instrument, time + i, duration, volume)
+    mf.addTempo(track, time,tempo)
     
+        
+
+"""
     if len(noteLengths1_VV) == 0:
-        print("...")
+        print("Kick Done")
     else:
         track = 0                           #eerste track
         channel = 10                        #percussie
-        volume = 100    
+        volume = 100
         instrument = 35                     #kick
-        time = currentNote1_VV              #startpunt noot
+        time = 0                            #startpunt noot
         duration = noteLengths1_VV.pop(0)   #1e nootlengte uit de lijst
         mf.addNote(track, channel, instrument, time, duration, volume) #voeg noot toe aan midifile
-        currentNote1_VV += duration
-        return MIDI_VV(mf, noteLengths1_VV, noteLengths2_VV, noteLengths3_VV, currentNote1_VV, currentNote2_VV, currentNote3_VV)
+        print(" ")
+        return MIDI_VV(mf)
 
     if len(noteLengths2_VV) == 0:
-        print("...")
+        print("Snare Done")
     else:
-        track = 0                           #tweede track (voor losse tracks gebruik 1)
-        startTime = 0        
+        track = 1                           #tweede track
+        startTime = 0
         channel = 10                        #percussie
-        volume = 100    
+        volume = 100
         instrument = 38                     #snare
-        time = currentNote2_VV              #startpunt noot
+        time = 0                            #startpunt noot
         duration = noteLengths2_VV.pop(0)   #1e nootlengte uit de lijst
         mf.addNote(track, channel, instrument, time, duration, volume)
-        currentNote2_VV += duration
-        return MIDI_VV(mf, noteLengths1_VV, noteLengths2_VV, noteLengths3_VV, currentNote1_VV, currentNote2_VV, currentNote3_VV)
+        print(" ")
+        return MIDI_VV(mf)
 
     if len(noteLengths3_VV) == 0:
+        print("Hihat Done")
         print("Done")
 
-        output_file = input("Name MIDI-file: ")
         #write to disk
         with open("output.mid", 'wb') as output_file:
             mf.writeFile(output_file)
     else:
-        track = 0                           #derde track (voor losse tracks gebruk 2)
+        track = 2                           #derde track
         startTime = 0
         channel = 10                        #percussie
-        volume = 100    
+        volume = 100
         instrument = 42                     #hihat
-        time = currentNote3_VV              #startpunt noot
+        time = 0                            #startpunt noot
         duration = noteLengths3_VV.pop(0)   #1e nootlengte uit de lijst
         mf.addNote(track, channel, instrument, time, duration, volume)
-        currentNote3_VV += duration
-        return MIDI_VV(mf, noteLengths1_VV, noteLengths2_VV, noteLengths3_VV, currentNote1_VV, currentNote2_VV, currentNote3_VV)
+        print(" ")
+        return MIDI_VV(mf)
+    """
 
-def MIDI_ZA(mf, noteLengths1_ZA, noteLengths2_ZA, noteLengths3_ZA, currentNote1_ZA, currentNote2_ZA, currentNote3_ZA):
-    if mf is None:
-        mf = MIDIFile(3)    #3 tracks
-        startTime = 0       #begint bij het begin
-        track = 0
-        mf.addTrackName(track, startTime, "7/8 Beat")
-        mf.addTempo(track, startTime, BPM)
-        return MIDI_ZA(mf, noteLengths1_ZA, noteLengths2_ZA, noteLengths3_ZA, currentNote1_ZA, currentNote2_ZA, currentNote3_ZA)
-    
-    if len(noteLengths1_ZA) == 0:
-        print("...")
-    else:
-        track = 0                           #eerste track
-        channel = 10                        #percussie
-        volume = 100    
-        instrument = 35                     #kick
-        time = currentNote1_ZA              #startpunt noot
-        duration = noteLengths1_ZA.pop(0)   #1e nootlengte uit de lijst
-        mf.addNote(track, channel, instrument, time, duration, volume) #voeg noot toe aan midifile
-        currentNote1_ZA += duration
-        return MIDI_ZA(mf, noteLengths1_ZA, noteLengths2_ZA, noteLengths3_ZA, currentNote1_ZA, currentNote2_ZA, currentNote3_ZA)
-
-    if len(noteLengths2_ZA) == 0:
-        print("...")
-    else:
-        track = 0                           #tweede track (voor losse tracks gebruik 1)
-        startTime = 0        
-        channel = 10                        #percussie
-        volume = 100    
-        instrument = 38                     #snare
-        time = currentNote2_ZA              #startpunt noot
-        duration = noteLengths2_ZA.pop(0)   #1e nootlengte uit de lijst
-        mf.addNote(track, channel, instrument, time, duration, volume)
-        currentNote2_ZA += duration
-        return MIDI_ZA(mf, noteLengths1_ZA, noteLengths2_ZA, noteLengths3_ZA, currentNote1_ZA, currentNote2_ZA, currentNote3_ZA)
-
-    if len(noteLengths3_ZA) == 0:
-        print("Done")
-        #write to disk
-        with open("output.mid", 'wb') as output_file:
-            mf.writeFile(output_file)
-    else:
-        track = 0                           #derde track (voor losse tracks gebruk 2)
-        startTime = 0
-        channel = 10                        #percussie
-        volume = 100    
-        instrument = 42                     #hihat
-        time = currentNote3_ZA              #startpunt noot
-        duration = noteLengths3_ZA.pop(0)   #1e nootlengte uit de lijst
-        mf.addNote(track, channel, instrument, time, duration, volume)
-        currentNote3_ZA += duration 
-        return MIDI_ZA(mf, noteLengths1_ZA, noteLengths2_ZA, noteLengths3_ZA, currentNote1_ZA, currentNote2_ZA, currentNote3_ZA)
-    
 def quit():
     stop = input("Quit? (yes/no) ")
     if stop == 'yes':
         quit
     else:
-        if stop == 'y':
-            quit
-        else:
-            return playBeat()
-    
+        return playBeat()
+#TODO
 def save_VV():
     save = input("Save as MIDI file? (yes/no) ")
     if save == 'yes':
-        MIDI_VV(None, noteLengths1_VV, noteLengths2_VV, noteLengths3_VV, currentNote1_VV, currentNote2_VV, currentNote3_VV)
+        MIDI_VV()
     else:
-        if save == 'y':
-            MIDI_VV(None, noteLengths1_VV, noteLengths2_VV, noteLengths3_VV, currentNote1_VV, currentNote2_VV, currentNote3_VV) 
-        else:
-            quit()
+        quit()
 
+#TODO
 def save_ZA():
     save = input("Save as MIDI file? (yes/no) ")
     if save == 'yes':
-        MIDI_ZA(None, noteLengths1_ZA, noteLengths2_ZA, noteLengths3_ZA, currentNote1_ZA, currentNote2_ZA, currentNote3_ZA)
+        MIDI_ZA()
     else:
-        if save == 'y':
-            MIDI_ZA(None, noteLengths1_ZA, noteLengths2_ZA, noteLengths3_ZA, currentNote1_ZA, currentNote2_ZA, currentNote3_ZA)
-        else:
-            quit()
+        quit()
 
 def playBeat():
     if maatsoort == 5/4:
-        print('5/4 playing')
+        print('5/4')
         l1_VV = Thread(target = laag1_VV)
         l2_VV = Thread(target = laag2_VV)
         l3_VV = Thread(target = laag3_VV)
