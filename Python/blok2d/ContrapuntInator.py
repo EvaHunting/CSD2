@@ -8,7 +8,6 @@ layer01 = []
 layer2 = []
 durations = []
 durations2 = []
-
 options = []
 
 for note in layer1:
@@ -41,7 +40,7 @@ def zijdelings():
     layerOne.pop(0)
     return lastNote
 def zijdelings2():
-    layerTwo.append(layerOne[0] + random.choice([1, -1, 2, -2]))
+    layerTwo.append(layerOne[0] + random.choice([2, -2]))
     getLastNote()
     layerOne.pop(0)
     return lastNote
@@ -132,7 +131,6 @@ def layer01Maker():
 
     return layer01
 
-
 def layer2Maker():
     options.extend([1, 2, 4, 8])
     for note in layerTwo:
@@ -147,7 +145,46 @@ def layer2Maker():
     options.clear()
     return layer2
 
+def create_notes(input_notes):
+    """
+    <Copied from Ciska>
+    Transforms a list of notes to m21 notes.
 
+    Parameters:
+    input_notes - a list of notes, each note defined as a list:
+                  [pitch, quarter_note_length, velocity]
+
+    Returns:
+    A list of m21 notes.
+    """
+    notes =[]                       # instantiate new list
+    for n in input_notes:
+        note = m21.note.Note()      # create m21 note
+        # to work with midi note values --> create a pitch object with
+        # midi parameter and assign this pitch object to note.pitch
+        note.pitch = m21.pitch.Pitch(midi=n[0])
+        note.quarterLength=n[1]     # set notelength and velocity
+        note.volume.velocity = n[2]
+        notes.append(note)          # add note to m21 notes list
+    return notes
+
+def notes_to_stream(notes):
+    """
+    <Copied from Ciska>
+    Creates a m21 stream adds the m21 notes in the passed list and returns the
+    stream.
+
+    Parameters:
+    notes: - A list of m21 notes.
+
+    Returns:
+    A m21 stream.
+    """
+    clef = m21.clef.TrebleClef()    # instantiate treble clef
+    stream = m21.stream.Stream()    # instantiate stream
+    stream.clef = clef
+    stream.append(notes)            # add notes
+    return stream
 
 verschil = 0;
 lastNote = getLastNote()
@@ -156,3 +193,17 @@ layer2Maker()
 layer01Maker()
 print(layer2)
 print(layer01)
+
+notes = create_notes(layer2)
+stream = notes_to_stream(notes)
+stream2 = m21.stream.Stream()
+stream2.append(stream)
+notes.clear()
+notes = create_notes(layer01)
+stream = notes_to_stream(notes)
+print(stream)
+print(stream2)
+s = m21.stream.Stream()
+s.insert(0.0, stream)
+s.insert(0.0, stream2)
+s.show()
