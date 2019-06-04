@@ -1,5 +1,6 @@
 #----------------------------------------Info--------------------------------------------------#
 '''
+For this program you need to install music21 and musescore version 2.3.2
 '''
 #----------------------------------------Imports-----------------------------------------------#
 import simpleaudio as sa
@@ -107,6 +108,7 @@ def melodyTransform(length):
         layer1.append([newPitches[i], newDurations[i], 120])
     return layer1
 
+# ContrapuntInator
 def getLastNote():
     global lastNote
     lastNote = layerOne[0]
@@ -238,8 +240,8 @@ def contrapuntInator():
     global lastNote
     global verschil
     verschil = (layerOne[1] - layerOne[0])
-    interval = (layerTwo[0] - lastNote)
-    if (interval == 3 or interval == 4 or interval == 8 or interval == 9): #tertsen en sexten
+    interval = abs(layerTwo[0] - lastNote)
+    if ( interval == 3 or interval == 4 or interval == 8 or interval == 9): #tertsen en sexten
         options.extend([0, 1, 2]) # 0 = zijdelings, 1 = tegenbeweging 2 = parallel
         choice = random.choice(options)
         options.clear()
@@ -416,7 +418,7 @@ print("For sharps, use lowercase.\nFor example: c2 \nThis will give you a half n
 time.sleep(6)
 print("Separate the notes with a single spacebar.\n")
 time.sleep(3)
-print("Example: D8 C4 E8 d2 E8 F4\n")
+print("Example: D8 C4 E8 F4 g8\n")
 time.sleep(4)
 print("****************\n")
 print("Okay, time to type your melody!\n")
@@ -427,7 +429,7 @@ print("\nTransforming...\n")
 layer1 = melodyTransform(length)
 time.sleep(2)
 print("CounterPointing...\n")
-#call ContrapuntInator
+
 for note in layer1:
     layerOne.append(note[0]) #alle midinootwaardes in een array
     layerOneCopy.append(note[0])
@@ -440,8 +442,6 @@ lastNote = getLastNote()
 contrapuntInator()
 layer2Maker()
 layer01Maker()
-print(layer01)
-print(layer2)
 notes = create_notes(layer2)
 stream = notes_to_stream(notes)
 stream2 = m21.stream.Stream()
